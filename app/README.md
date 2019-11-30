@@ -1,6 +1,6 @@
 # app
 
-> skillset-viewer frontend
+> skillset-visualizer frontend
 
 ## Build Setup
 
