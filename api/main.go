@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -58,7 +57,5 @@ func fetchGraphDataHandler(w http.ResponseWriter, r *http.Request) {
 		log.Printf("ID: %d, CATEGORIES: %s", id, categories)
 	}
 
-	// あとで、構造体に入れるようにしてマーシャル対応
-	body := `{"frontend": 1,"backend": 2,"database": 3,"infrastructure": 3,"network": 2,"facilitation": 4}`
-	fmt.Fprint(w, body)
+	w.Write([]byte(categories))
 }
