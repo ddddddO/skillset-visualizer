@@ -38,6 +38,7 @@ func fetchGraphDataHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
 
 	rows, err := db.Query("SELECT * FROM skills")
