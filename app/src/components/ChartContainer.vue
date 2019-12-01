@@ -8,18 +8,14 @@
 </template>
 
 <script>
-// import Chart from './Chart.vue'
-import Bar from './Chart.vue'
-// import Bar from 'vue-chartjs'
+import BarChart from './Chart.js'
 
 export default {
-  name: 'BarChart',
-  // extends: Bar,
-  components: { Bar },
+  name: 'BarChartContainer',
+  components: { BarChart },
   data: () => ({
     loaded: false,
     chartdata: null
-    // options: null
   }),
   async mounted () {
     this.loaded = false
@@ -35,7 +31,38 @@ export default {
       console.log('--debug!--')
       console.log(graphData)
 
-      this.chartData = graphData
+      // this.chartdata = graphData
+      this.chartdata = {
+        labels: [
+          'frontend',
+          'backend',
+          'database',
+          'infrastructure',
+          'network',
+          'facilitation'
+        ],
+        datasets: [{
+          label: 'now(sample)',
+          data: [1, 2, 3, 3, 2, 4],
+          borderWidth: 1,
+          borderColor: [
+            'rgba(85, 222, 22, 1)',
+            'rgba(244, 67, 146, 1)',
+            'rgba(67, 114, 244, 1)',
+            'rgba(164, 162, 146, 1)',
+            'rgba(29, 240, 191, 1)',
+            'rgba(240, 29, 78, 1)'
+          ],
+          backgroundColor: [
+            'rgba(85, 222, 22, 0.4)',
+            'rgba(244, 67, 146, 0.4)',
+            'rgba(67, 114, 244, 0.4)',
+            'rgba(164, 162, 146, 0.4)',
+            'rgba(29, 240, 191, 0.4)',
+            'rgba(240, 29, 78, 0.4)'
+          ]
+        }]
+      }
       this.options = {
         scales: {
           xAxes: [{

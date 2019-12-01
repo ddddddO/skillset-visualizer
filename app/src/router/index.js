@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import HelloBar from '@/components/BaseChart'
 import LineChart from '@/components/RandomChart'
-import BarChart from '@/components/ChartContainer'
+import BarChartContainer from '@/components/ChartContainer'
 
 Vue.use(Router)
 
@@ -25,9 +25,9 @@ export default new Router({
       component: LineChart
     },
     {
-      path: '/bar_chart_container',
+      path: '/bar-chart',
       name: 'BarChart',
-      component: BarChart
+      component: BarChartContainer
     }
   ]
 })
