@@ -25,25 +25,18 @@ export default {
           return resp.json()
         })
         .then(function (json) {
-          return JSON.stringify(json)
+          let strJson = JSON.stringify(json)
+          return JSON.parse(strJson)
         })
 
       console.log('--debug!--')
       console.log(graphData)
 
-      // this.chartdata = graphData
       this.chartdata = {
-        labels: [
-          'frontend',
-          'backend',
-          'database',
-          'infrastructure',
-          'network',
-          'facilitation'
-        ],
+        labels: Object.keys(graphData),
         datasets: [{
           label: 'now(sample)',
-          data: [1, 2, 3, 3, 2, 4],
+          data: Object.values(graphData),
           borderWidth: 1,
           borderColor: [
             'rgba(85, 222, 22, 1)',
