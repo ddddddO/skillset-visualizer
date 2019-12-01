@@ -25,7 +25,7 @@ export default {
           return resp.json()
         })
         .then(function (json) {
-          let strJson = JSON.stringify(json)
+          const strJson = JSON.stringify(json)
           return JSON.parse(strJson)
         })
 
