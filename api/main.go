@@ -28,7 +28,7 @@ func main() {
 
 func Run() {
 	http.HandleFunc("/fetch", fetchGraphDataHandler)
-	http.handleFunc("/put/:user_id".putGraphDataHandler)
+	http.HandleFunc("/put/:user_id", putGraphDataHandler)
 
 	log.Fatal(http.ListenAndServe(":8081", nil))
 }
