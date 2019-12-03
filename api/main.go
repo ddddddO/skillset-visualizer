@@ -28,6 +28,8 @@ func main() {
 
 func Run() {
 	http.HandleFunc("/fetch", fetchGraphDataHandler)
+	http.handleFunc("/put/:user_id".putGraphDataHandler)
+
 	log.Fatal(http.ListenAndServe(":8081", nil))
 }
 
@@ -59,4 +61,8 @@ func fetchGraphDataHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write([]byte(categories))
+}
+
+func putGraphDataHandler(w http.ResponseWriter, r *http.Request) {
+	return
 }
