@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"io"
 	"log"
 	"net/http"
 	"strconv"
@@ -36,14 +37,14 @@ func Run() {
 }
 
 func fetchGraphDataHandler(w http.ResponseWriter, r *http.Request) {
-	// Getリクエスト以外受け付けない
+	// GETリクエスト以外受け付けない
 	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
 	log.Print("fetchGraphData request")
 
-	// FIXME: QueryRowへ
+	// TODO: QueryRowへ
 	rows, err := db.Query("SELECT * FROM skills")
 	if err != nil {
 		log.Fatal(err)
@@ -67,12 +68,25 @@ func fetchGraphDataHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func putGraphDataHandler(w http.ResponseWriter, r *http.Request) {
-	// Postリクエスト以外受け付けない
-	if r.Method != http.MethodPut {
+	// OPTIONS・PUTリクエスト以外受け付けないガード節
+	if !(r.Method == http.MethodPut || r.Method == http.MethodOptions) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
-	// FIXME:まとめる
+
+	// OPTIONSリクエストの場合
+	// プリフライトリクエスト: https://developer.mozilla.org/ja/docs/Web/HTTP/CORS
+	if r.Method == http.MethodOptions {
+		w.Header().Add("Access-Control-Allow-Origin", "*")
+		w.Header().Add("Access-Control-Allow-Methods", "OPTIONS, PUT")
+		w.Header().Add("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Add("Access-Control-Max-Age", "86400") // 24h
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	// PUTリクエストの場合
+	// TODO:まとめる
 	if strings.Count(r.URL.Path, "/") != 2 {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -90,16 +104,28 @@ func putGraphDataHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 
 	row := db.QueryRow("SELECT id FROM skills WHERE id = $1", id)
 	if err := row.Scan(); err == sql.ErrNoRows {
-		// FIXME: リソース無い的なステータスへ
-		w.WriteHeader(http.StatusBadRequest)
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+	buf := make([]byte, r.ContentLength)
+	_, err = r.Body.Read(buf)
+	if err != nil && err != io.EOF {
+		w.WriteHeader(http.StatusInternalServerError)
+		log.Printf("%+v", err)
 		return
 	}
 
-	j := `{"frontend": 3,"backend": 3,"database": 3,"infrastructure": 3,"network": 3,"facilitation": 3}`
-	result, err := db.Exec("UPDATE skills SET categories = $1", j)
+	/*
+		// debug
+		dump, _ := httputil.DumpRequest(r, true)
+		log.Print(string(dump))
+	*/
+
+	result, err := db.Exec("UPDATE skills SET categories = $1", string(buf))
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -111,9 +137,5 @@ func putGraphDataHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Print("putGraphData request")
-
-	w.Header().Add("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/json")
-	w.Write([]byte("Hello, PUT!"))
 	return
 }
