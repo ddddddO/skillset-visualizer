@@ -11,6 +11,8 @@
     </select>
     <br>
     <input type="range" v-model="selectedNum" min="0" max="5">
+    <br>
+    <button v-on:click="putChartData">Push!</button>
   </div>
 </template>
 
@@ -127,6 +129,38 @@ export default {
           ]
         }]
       }
+    },
+    putChartData: function () {
+      const data = this.mappingChartData(this.categories, this.nums)
+
+      // ref: https://github.com/axios/axios#instance-methods
+      const apiClient = require('axios').create({
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      apiClient.put('http://localhost:8081/put/1', data)
+        .then(function (resp) {
+          console.log('debug resp', resp)
+        }).catch(function (err) {
+          console.log('ERROR...', err)
+        }).finally(function () {
+          // FIXME: 再描画がうまくいかない。機能としてはいまのところ不要だけど、、
+          // ref: https://qiita.com/shoridevel/items/11638860eb04dfe56df7
+          // this.$router.go({path: this.$router.currentRoute.path, force: true})
+        })// .bind(this))
+    },
+    mappingChartData: function (keys, values) {
+      if (keys.length !== values.length) {
+        console.log('no match keys/values')
+        return {}
+      }
+
+      let kv = {}
+      for (var i = 0; i < keys.length; i++) {
+        kv[keys[i]] = values[i]
+      }
+      return kv
     }
   },
   watch: {
