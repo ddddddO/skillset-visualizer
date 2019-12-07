@@ -131,7 +131,13 @@ export default {
       }
     },
     putChartData: function () {
-      const data = this.mappingChartData(this.categories, this.nums)
+      let data = {}
+      try {
+        data = this.mappingChartData(this.categories, this.nums)
+      } catch (e) {
+        alert('ERROR...' + e)
+        return
+      }
 
       // ref: https://github.com/axios/axios#instance-methods
       const apiClient = require('axios').create({
@@ -142,8 +148,8 @@ export default {
       apiClient.put('http://localhost:8081/put/1', data)
         .then(function (resp) {
           console.log('debug resp', resp)
-        }).catch(function (err) {
-          console.log('ERROR...', err)
+        }).catch(function (e) {
+          console.log('ERROR...', e)
         }).finally(function () {
           // FIXME: 再描画がうまくいかない。機能としてはいまのところ不要だけど、、
           // ref: https://qiita.com/shoridevel/items/11638860eb04dfe56df7
@@ -152,8 +158,8 @@ export default {
     },
     mappingChartData: function (keys, values) {
       if (keys.length !== values.length) {
-        console.log('no match keys/values')
-        return {}
+        // ref: https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Statements/throw
+        throw String('no match keys/values')
       }
 
       let kv = {}
