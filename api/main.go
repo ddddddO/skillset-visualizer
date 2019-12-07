@@ -42,25 +42,19 @@ func fetchGraphDataHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
-	log.Print("fetchGraphData request")
-
-	// TODO: QueryRowへ
-	rows, err := db.Query("SELECT * FROM skills")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer rows.Close()
 
 	var (
 		id         int64
 		categories string
 	)
-	for rows.Next() {
-		if err := rows.Scan(&id, &categories); err != nil {
-			log.Fatal(err)
-		}
-		log.Printf("ID: %d, CATEGORIES: %s", id, categories)
+	row := db.QueryRow("SELECT id, categories FROM skills WHERE id = 1")
+	if err := row.Scan(&id, &categories); err == sql.ErrNoRows {
+		w.WriteHeader(http.StatusNotFound)
+		return
 	}
+
+	log.Print("fetchGraphData request")
+	log.Printf("ID: %d, CATEGORIES: %s", id, categories)
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
@@ -99,14 +93,14 @@ func putGraphDataHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	id, err := strconv.Atoi(strings.Split(r.URL.Path, "/")[2])
+	targetID, err := strconv.Atoi(strings.Split(r.URL.Path, "/")[2])
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 	w.Header().Add("Access-Control-Allow-Origin", "*")
 
-	row := db.QueryRow("SELECT id FROM skills WHERE id = $1", id)
+	row := db.QueryRow("SELECT id FROM skills WHERE id = $1", targetID)
 	if err := row.Scan(); err == sql.ErrNoRows {
 		w.WriteHeader(http.StatusNotFound)
 		return
@@ -118,6 +112,7 @@ func putGraphDataHandler(w http.ResponseWriter, r *http.Request) {
 		log.Printf("%+v", err)
 		return
 	}
+	defer r.Body.Close()
 
 	/*
 		// debug
@@ -125,7 +120,7 @@ func putGraphDataHandler(w http.ResponseWriter, r *http.Request) {
 		log.Print(string(dump))
 	*/
 
-	result, err := db.Exec("UPDATE skills SET categories = $1", string(buf))
+	result, err := db.Exec("UPDATE skills SET categories = $1 WHERE id = $2", string(buf), targetID)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return

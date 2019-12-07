@@ -42,37 +42,38 @@ export default {
           return JSON.parse(strJson)
         })
 
-      console.log('--debug!--')
-      console.log(graphData)
+      console.log('--debug!--', graphData)
 
       this.categories = Object.keys(graphData)
       this.nums = Object.values(graphData)
-
-      this.chartdata = {
-        labels: this.categories,
+      this.chartdata = this.genChartData(this.categories, this.nums)
+      this.options = this.genOptions()
+      this.loaded = true
+    } catch (e) {
+      console.error(e)
+    }
+  },
+  methods: {
+    genChartData: function (categories, nums) {
+      return {
+        labels: categories,
         datasets: [{
           label: 'now(sample)',
-          data: this.nums,
+          data: nums,
           borderWidth: 1,
           borderColor: [
-            'rgba(85, 222, 22, 1)',
-            'rgba(244, 67, 146, 1)',
-            'rgba(67, 114, 244, 1)',
-            'rgba(164, 162, 146, 1)',
-            'rgba(29, 240, 191, 1)',
-            'rgba(240, 29, 78, 1)'
+            'rgba(85, 222, 22, 1)', 'rgba(244, 67, 146, 1)', 'rgba(67, 114, 244, 1)',
+            'rgba(164, 162, 146, 1)', 'rgba(29, 240, 191, 1)', 'rgba(240, 29, 78, 1)'
           ],
           backgroundColor: [
-            'rgba(85, 222, 22, 0.4)',
-            'rgba(244, 67, 146, 0.4)',
-            'rgba(67, 114, 244, 0.4)',
-            'rgba(164, 162, 146, 0.4)',
-            'rgba(29, 240, 191, 0.4)',
-            'rgba(240, 29, 78, 0.4)'
+            'rgba(85, 222, 22, 0.4)', 'rgba(244, 67, 146, 0.4)', 'rgba(67, 114, 244, 0.4)',
+            'rgba(164, 162, 146, 0.4)', 'rgba(29, 240, 191, 0.4)', 'rgba(240, 29, 78, 0.4)'
           ]
         }]
       }
-      this.options = {
+    },
+    genOptions: function () {
+      return {
         scales: {
           xAxes: [{
             scaleLabel: {
@@ -90,45 +91,17 @@ export default {
           }]
         }
       }
-      this.loaded = true
-    } catch (e) {
-      console.error(e)
-    }
-  },
-  methods: {
-    reInputChartdata: function (category, num) {
+    },
+    reInputChartdata: function (selectedCategory, selectedNum) {
       const cb = function (cat) {
-        return cat === category
+        return cat === selectedCategory
       }
       const index = this.categories.findIndex(cb)
 
       if (index === -1) { return }
 
-      this.nums[index] = num
-      this.chartdata = {
-        labels: this.categories,
-        datasets: [{
-          label: 'now(sample)',
-          data: this.nums,
-          borderWidth: 1,
-          borderColor: [
-            'rgba(85, 222, 22, 1)',
-            'rgba(244, 67, 146, 1)',
-            'rgba(67, 114, 244, 1)',
-            'rgba(164, 162, 146, 1)',
-            'rgba(29, 240, 191, 1)',
-            'rgba(240, 29, 78, 1)'
-          ],
-          backgroundColor: [
-            'rgba(85, 222, 22, 0.4)',
-            'rgba(244, 67, 146, 0.4)',
-            'rgba(67, 114, 244, 0.4)',
-            'rgba(164, 162, 146, 0.4)',
-            'rgba(29, 240, 191, 0.4)',
-            'rgba(240, 29, 78, 0.4)'
-          ]
-        }]
-      }
+      this.nums[index] = selectedNum
+      this.chartdata = this.genChartData(this.categories, this.nums)
     },
     putChartData: function () {
       let data = {}
