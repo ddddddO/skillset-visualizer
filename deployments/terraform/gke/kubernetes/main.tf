@@ -1,24 +1,74 @@
 provider kubernetes {
 }
 
-# WIP
-# https://www.terraform.io/docs/providers/kubernetes/guides/getting-started.html
-resource "kubernetes_pod" "nginx" {
+resource kubernetes_pod sv_all_in_one {
   metadata {
-    name = "nginx-example"
+    name = "sv-all-in-one"
     labels = {
-      App = "nginx"
+      app = "skillset-visualizer"
     }
   }
 
   spec {
     container {
-      image = "nginx:1.7.8"
-      name  = "example"
-
+      name = "sv-db"
+      image = "us.gcr.io/work1111/sv-db"
       port {
-        container_port = 80
+        container_port = 5432
       }
+    }
+    container {
+      name = "sv-api"
+      image = "us.gcr.io/work1111/sv-api"
+      port {
+        container_port = 8081
+      }
+      command = ["ash", "-c", "sleep 10; ./api"]
+    }
+    container {
+      name = "sv-app"
+      image = "us.gcr.io/work1111/sv-app"
+      port {
+        container_port = 8080
+      }
+      command = ["ash", "-c", "sleep 10; http-server dist"]
+    }
+  }
+}
+
+# ref: https://www.terraform.io/docs/providers/kubernetes/r/service.html
+resource kubernetes_service sv_app_svc {
+  metadata {
+    name = "sv-app-svc"
+    labels = {
+      svc = "sv-app-svc"
+    }
+  }
+
+  spec {
+    type = "NodePort"
+    selector = {
+      #app = "${kubernetes_pod.sv_all_in_one.metadata.0.labels.app}" NOTE: This map does not have an element with the key "app".
+      app = "skillset-visualizer"
+    }
+
+    port {
+      port = 80
+      target_port = 8080
+    }
+  }
+}
+
+# ref: https://www.terraform.io/docs/providers/kubernetes/r/ingress.html
+resource kubernetes_ingress sv_app_svc_ingress {
+  metadata {
+    name = "sv-app-svc-ingress"
+  }
+
+  spec {
+    backend {
+      service_name = "${kubernetes_service.sv_app_svc.metadata.0.labels.svc}"
+      service_port = 80
     }
   }
 }

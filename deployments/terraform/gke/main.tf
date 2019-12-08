@@ -11,6 +11,17 @@ resource google_compute_network work_net {
   name = "work-net"
 }
 
+# ファイアウォール
+resource google_compute_firewall work_net_fw {
+  name = "work-net-fw"
+  network = "${google_compute_network.work_net.name}"
+
+  allow {
+    protocol = "tcp"
+    ports = ["80", "81"]
+  }
+}
+
 resource google_container_cluster gcc {
   name = "work-gcc"
   location = "us-central1"
