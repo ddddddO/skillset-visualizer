@@ -7,4 +7,4 @@ COPY api ./
 RUN ["go", "build"]
 
 EXPOSE 8081
-CMD ["./api"]
+ENTRYPOINT ["./api"]
