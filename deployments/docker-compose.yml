@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  skillsets-db:
+    build:
+      context: ../
+      dockerfile: /deployments/dockerfiles/db/Dockerfile
+    ports:
+      - "5432:5432"
