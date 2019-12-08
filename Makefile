@@ -11,6 +11,7 @@ connpg:
 
 # gcsへのイメージのpush/pull
 # https://cloud.google.com/container-registry/docs/pushing-and-pulling?hl=ja
+# example: make buildpush IMAGE=app
 buildpush:
 	gcloud auth configure-docker
 	docker build -t us.gcr.io/work1111/sv-${IMAGE} -f deployments/dockerfiles/${IMAGE}/Dockerfile .
