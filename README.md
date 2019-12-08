@@ -1,1 +1,1 @@
-# skillset-viewer
+# skillset-visualizer
