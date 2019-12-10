@@ -69,9 +69,51 @@ resource kubernetes_ingress sv_app_svc_ingress {
   }
 
   spec {
-    backend {
-      service_name = "${kubernetes_service.sv_app_svc.metadata.0.labels.svc}"
-      service_port = 80
+    rule {
+      http {
+        path {
+          path = "/*"
+          backend {
+            service_name = "${kubernetes_service.sv_app_svc.metadata.0.labels.svc}"
+            service_port = 80
+          }
+        }
+        path {
+          path = "/fetch"
+          backend {
+            service_name = "${kubernetes_service.sv_api_svc.metadata.0.labels.svc}"
+            service_port = 8081
+          }
+        }
+        path {
+          path = "/put/*"
+          backend {
+            service_name = "${kubernetes_service.sv_api_svc.metadata.0.labels.svc}"
+            service_port = 8081
+          }
+        }
+      }
+    }
+  }
+}
+
+resource kubernetes_service sv_api_svc {
+  metadata {
+    name = "sv-api-svc"
+    labels = {
+      svc = "sv-api-svc"
+    }
+  }
+
+  spec {
+    type = "NodePort"
+    selector = {
+      api = "skillset-visualizer"
+    }
+
+    port {
+      port = 8081
+      target_port = 8081
     }
   }
 }
