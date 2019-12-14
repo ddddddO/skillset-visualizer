@@ -16,7 +16,7 @@ resource kubernetes_service sv_api_svc {
     }
 
     port {
-      port = 8081
+      port        = 8081
       target_port = 8081
     }
   }
@@ -31,14 +31,14 @@ resource kubernetes_pod sv_api_db {
   }
   spec {
     container {
-      name = "sv-db"
+      name  = "sv-db"
       image = "us.gcr.io/work1111/sv-db"
       port {
         container_port = 5432
       }
     }
     container {
-      name = "sv-api"
+      name  = "sv-api"
       image = "us.gcr.io/work1111/sv-api"
       port {
         container_port = 8081
@@ -50,8 +50,8 @@ resource kubernetes_pod sv_api_db {
           port = 8081
         }
         initial_delay_seconds = 15
-        period_seconds = 120
-        timeout_seconds = 20
+        period_seconds        = 120
+        timeout_seconds       = 20
       }
     }
   }
@@ -74,7 +74,7 @@ resource kubernetes_service sv_app_svc {
     }
 
     port {
-      port = 80
+      port        = 80
       target_port = 8080
     }
   }
@@ -89,7 +89,7 @@ resource kubernetes_pod sv_app {
   }
   spec {
     container {
-      name = "sv-app"
+      name  = "sv-app"
       image = "us.gcr.io/work1111/sv-app"
       port {
         container_port = 8080
