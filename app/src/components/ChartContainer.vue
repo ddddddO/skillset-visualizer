@@ -145,7 +145,7 @@ export default {
     },
     buildENDPOINT: function () {
       let host = process.env.API_HOST
-      if (typeof host === 'undefined') {
+      if (host !== 'localhost') {
         return 'http://dododo.site'
       }
       return 'http://' + host + ':8081'
