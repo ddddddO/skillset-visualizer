@@ -104,7 +104,7 @@ resource kubernetes_ingress sv_app_svc_ingress {
   metadata {
     name = "sv-app-svc-ingress"
     annotations = {
-      "kubernetes.io/ingress.global-static-ip-name" = "work-skillset-visualizer"
+      "kubernetes.io/ingress.global-static-ip-name" = data.google_compute_global_address.dododo_ip.name
     }
   }
 
