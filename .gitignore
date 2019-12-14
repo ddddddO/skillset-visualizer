@@ -1,1 +1,4 @@
 node_modules
+
+*.plan
+*.tfstate.backup

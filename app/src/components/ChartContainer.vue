@@ -24,6 +24,7 @@ export default {
   components: { BarChart },
   data: () => ({
     loaded: false,
+    endpoint: '',
     chartdata: null,
     categories: null,
     nums: null,
@@ -32,8 +33,9 @@ export default {
   }),
   async mounted () {
     this.loaded = false
+    this.endpoint = this.buildENDPOINT()
     try {
-      const graphData = await fetch('http://localhost:8081/fetch')
+      const graphData = await fetch(this.endpoint + '/fetch', {mode: 'cors', headers: {'Accept': 'application/json'}})
         .then(function (resp) {
           return resp.json()
         })
@@ -118,7 +120,7 @@ export default {
           'Content-Type': 'application/json'
         }
       })
-      apiClient.put('http://localhost:8081/put/1', data)
+      apiClient.put(this.endpoint + '/put/1', data)
         .then(function (resp) {
           console.log('debug resp', resp)
         }).catch(function (e) {
@@ -140,6 +142,13 @@ export default {
         kv[keys[i]] = values[i]
       }
       return kv
+    },
+    buildENDPOINT: function () {
+      let host = process.env.API_HOST
+      if (typeof host === 'undefined') {
+        return 'http://dododo.site'
+      }
+      return 'http://' + host + ':8081'
     }
   },
   watch: {

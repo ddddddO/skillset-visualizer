@@ -1,7 +1,7 @@
 IMAGE=""
 
 run:
-	cd app && npm run dev
+	cd app && API_HOST=localhost npm run dev
 
 open:
 	cmd.exe /c start http://localhost:8080/#/bar-chart
