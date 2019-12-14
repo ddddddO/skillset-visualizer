@@ -35,7 +35,7 @@ export default {
     this.loaded = false
     this.endpoint = this.buildENDPOINT()
     try {
-      const graphData = await fetch(this.endpoint + ':8081/fetch')
+      const graphData = await fetch(this.endpoint + '/fetch', {mode: 'cors', headers: {'Accept': 'application/json'}})
         .then(function (resp) {
           return resp.json()
         })
@@ -120,7 +120,7 @@ export default {
           'Content-Type': 'application/json'
         }
       })
-      apiClient.put(this.endpoint + ':8081/put/1', data)
+      apiClient.put(this.endpoint + '/put/1', data)
         .then(function (resp) {
           console.log('debug resp', resp)
         }).catch(function (e) {
@@ -148,7 +148,7 @@ export default {
       if (typeof host === 'undefined') {
         return 'http://dododo.site'
       }
-      return 'http://' + host
+      return 'http://' + host + ':8081'
     }
   },
   watch: {
