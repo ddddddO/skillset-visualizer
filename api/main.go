@@ -16,6 +16,8 @@ const DBDSN = "user=postgres dbname=skillsets host=localhost port=5432 sslmode=d
 var db *sql.DB
 
 func init() {
+	log.Print("connect db")
+
 	var err error
 	db, err = sql.Open("postgres", DBDSN)
 	if err != nil {
@@ -30,13 +32,27 @@ func main() {
 }
 
 func Run() {
+	http.HandleFunc("/health", healthCheckHandler)
 	http.HandleFunc("/fetch", fetchGraphDataHandler)
 	http.HandleFunc("/put/", putGraphDataHandler)
 
 	log.Fatal(http.ListenAndServe(":8081", nil))
 }
 
+func healthCheckHandler(w http.ResponseWriter, r *http.Request) {
+	log.Print("health api")
+	// GETリクエスト以外受け付けない
+	if r.Method != http.MethodGet {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+}
+
 func fetchGraphDataHandler(w http.ResponseWriter, r *http.Request) {
+	log.Print("fetch graph conn")
+
 	// GETリクエスト以外受け付けない
 	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -62,6 +78,8 @@ func fetchGraphDataHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func putGraphDataHandler(w http.ResponseWriter, r *http.Request) {
+	log.Print("put graph conn")
+
 	// OPTIONS・PUTリクエスト以外受け付けないガード節
 	if !(r.Method == http.MethodPut || r.Method == http.MethodOptions) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
