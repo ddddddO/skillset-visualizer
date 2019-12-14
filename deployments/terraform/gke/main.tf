@@ -18,7 +18,7 @@ resource google_compute_firewall work_net_fw {
 
   allow {
     protocol = "tcp"
-    ports = ["80", "81"]
+    ports = ["80", "8081"]
   }
 }
 
