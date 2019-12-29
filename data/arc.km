@@ -1,0 +1,107 @@
+{
+    "root": {
+        "data": {
+            "id": "bzhtz0uzkf40",
+            "created": 1577615363737,
+            "text": "terraform"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "bzhu21vurww0",
+                    "created": 1577615601058,
+                    "text": "kubernetes",
+                    "layout_mind_offset": {
+                        "x": -70.00000000000006,
+                        "y": 109
+                    },
+                    "layout_bottom_offset": {
+                        "x": -37.49999850988388,
+                        "y": -0.8333333002195218
+                    }
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "bzhu8ooeh3k0",
+                            "created": 1577616120859,
+                            "text": "Ingress",
+                            "expandState": "expand"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "bzhu9p7ef4o0",
+                                    "created": 1577616200372,
+                                    "text": "Service",
+                                    "expandState": "expand"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "bzhu9zyv7m00",
+                                            "created": 1577616223800,
+                                            "text": "Pod"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "bzhu3g6nyzs0",
+                    "created": 1577615710551,
+                    "text": "GCP",
+                    "layout_mind_offset": {
+                        "x": 455,
+                        "y": 3
+                    }
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "bzhu3ykmt3c0",
+                            "created": 1577615750578,
+                            "text": "VPC",
+                            "expandState": "expand"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "bzhu6hvyfpk0",
+                                    "created": 1577615949350,
+                                    "text": "firewall"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "bzhu6vux9cw0",
+                                    "created": 1577615979762,
+                                    "text": "GKE"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "bzhu7gpaagg0",
+                                            "created": 1577616025134,
+                                            "text": "node pool"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "filetree",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
