@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import HelloBar from '@/components/BaseChart'
-import LineChart from '@/components/RandomChart'
-import BarChartContainer from '@/components/ChartContainer'
+import Main from '@/components/Main'
+import LineChart from '@/components/RandomChart/RandomChart'
+import SSBarChart from '@/components/SSBarChart/SSBarChart'
 
 Vue.use(Router)
 
@@ -11,13 +10,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    },
-    {
-      path: '/bar',
-      name: 'HelloBar',
-      component: HelloBar
+      name: 'Main',
+      component: Main
     },
     {
       path: '/line',
@@ -25,9 +19,9 @@ export default new Router({
       component: LineChart
     },
     {
-      path: '/bar-chart',
-      name: 'BarChart',
-      component: BarChartContainer
+      path: '/ss-bar-chart',
+      name: 'SSBarChart',
+      component: SSBarChart
     }
   ]
 })

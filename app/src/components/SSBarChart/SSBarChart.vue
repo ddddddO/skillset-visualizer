@@ -20,7 +20,7 @@
 import BarChart from './Chart.js'
 
 export default {
-  name: 'BarChartContainer',
+  name: 'SSBarChart',
   components: { BarChart },
   data: () => ({
     loaded: false,
