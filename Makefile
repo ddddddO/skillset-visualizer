@@ -1,6 +1,12 @@
 IMAGE=""
 
-run:
+rundb:
+	cd deployments && docker-compose up
+
+runapi:
+	cd api && go run main.go
+
+runapp:
 	cd app && npm run dev
 
 open:
