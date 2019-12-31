@@ -81,7 +81,10 @@ func putGraphDataHandler(w http.ResponseWriter, r *http.Request) {
 	log.Print("put graph conn")
 
 	// OPTIONS・PUTリクエスト以外受け付けないガード節
-	if !(r.Method == http.MethodPut || r.Method == http.MethodOptions) {
+	switch r.Method {
+	case http.MethodPut:
+	case http.MethodOptions:
+	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
