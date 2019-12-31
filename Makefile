@@ -22,3 +22,8 @@ buildpush:
 	gcloud auth configure-docker
 	docker build -t us.gcr.io/work1111/sv-${IMAGE} -f deployments/dockerfiles/${IMAGE}/Dockerfile .
 	docker push us.gcr.io/work1111/sv-${IMAGE}
+
+# UT
+test:
+	cd api && \
+	go test -v ./...
