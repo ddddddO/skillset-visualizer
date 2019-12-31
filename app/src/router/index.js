@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Main from '@/components/Main'
+import Top from '@/components/Top'
 import LineChart from '@/components/RandomChart/RandomChart'
 import SSBarChart from '@/components/SSBarChart/SSBarChart'
+import TodoList from '@/components/Todo/Todo'
 
 Vue.use(Router)
 
@@ -10,8 +11,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Main',
-      component: Main
+      name: 'Top',
+      component: Top
     },
     {
       path: '/line',
@@ -22,6 +23,11 @@ export default new Router({
       path: '/ss-bar-chart',
       name: 'SSBarChart',
       component: SSBarChart
+    },
+    {
+      path: '/todo',
+      name: 'TODOLIST',
+      component: TodoList
     }
   ]
 })
