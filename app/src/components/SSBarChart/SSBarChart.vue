@@ -1,17 +1,15 @@
 <template>
   <div class="container">
-    <h1>skillset-visualizer</h1>
     <bar-chart
       v-if="loaded"
       :chart-data="chartdata"
       :options="options"/>
     <br>
     <select v-model="selectedCategory">
+      <option disabled value="">Please select category</option>
       <option v-for="category in categories" v-bind:key="category">{{ category }}</option>
     </select>
-    <br>
     <input type="range" v-model="selectedNum" min="0" max="5">
-    <br>
     <button v-on:click="putChartData">Push!</button>
   </div>
 </template>

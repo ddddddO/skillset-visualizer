@@ -1,7 +1,7 @@
 <template>
   <div class="main">
-    <h1>{{ msg }}</h1>
-    <h2>Links!</h2>
+    <h2>{{ title }}</h2>
+    <h3>Links!</h3>
     <ul>
       <li><router-link to="line">RandomLine</router-link></li>
       <li><router-link to="ss-bar-chart">SSBarChart</router-link></li>
@@ -14,7 +14,7 @@ export default {
   name: 'Main',
   data () {
     return {
-      msg: 'Skillset Visualizer'
+      title: 'TOP'
     }
   }
 }
