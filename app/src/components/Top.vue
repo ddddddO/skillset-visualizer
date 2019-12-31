@@ -1,17 +1,18 @@
 <template>
-  <div class="main">
+  <div class="top">
     <h2>{{ title }}</h2>
     <h3>Links!</h3>
     <ul>
       <li><router-link to="line">RandomLine</router-link></li>
       <li><router-link to="ss-bar-chart">SSBarChart</router-link></li>
+      <li><router-link to="todo">TodoList</router-link></li>
     </ul>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Main',
+  name: 'Top',
   data () {
     return {
       title: 'TOP'
