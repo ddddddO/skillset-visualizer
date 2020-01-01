@@ -1,0 +1,11 @@
+# https://github.com/rubenv/sql-migrate
+development:
+    dialect: postgres
+    datasource: user=postgres dbname=skillsets host=localhost port=5432 sslmode=disable
+    dir: .
+
+# production:
+#     dialect: postgres
+#     datasource: dbname=myapp sslmode=disable
+#     dir: migrations/postgres
+#     table: migrations
