@@ -1,0 +1,19 @@
+# overview: https://github.com/GoogleContainerTools/skaffold
+# skaffold.yml: https://skaffold.dev/docs/references/yaml/
+---
+apiVersion: skaffold/v2alpha1
+kind: Config
+metadata:
+  name: skillset-visualizer
+build:
+  local:
+    useBuildkit: true
+  artifacts:
+  - image: us.gcr.io/work1111/sv-api
+    context: .
+    docker:
+      dockerfile: deployments/dockerfiles/api/Dockerfile
+deploy:
+  kubectl:
+    manifests:
+    - deployments/kubernetes/pod.yml

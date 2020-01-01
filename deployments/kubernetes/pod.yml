@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sv-api
+spec:
+  containers:
+    - name: api
+      image: us.gcr.io/work1111/sv-api
