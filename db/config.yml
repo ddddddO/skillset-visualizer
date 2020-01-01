@@ -2,7 +2,7 @@
 development:
     dialect: postgres
     datasource: user=postgres dbname=skillsets host=localhost port=5432 sslmode=disable
-    dir: .
+    dir: db
 
 # production:
 #     dialect: postgres

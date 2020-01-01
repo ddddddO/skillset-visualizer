@@ -1,0 +1,88 @@
+# postgres + go サンプル：
+# https://circleci.com/docs/ja/2.0/postgres-config/#postgresql-%E3%81%A8-go-%E8%A8%80%E8%AA%9E%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9F%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E8%A8%AD%E5%AE%9A%E4%BE%8B
+version: 2
+jobs:
+  build:
+    docker:
+      # CircleCI の Go のイメージはこちら https://hub.docker.com/r/circleci/golang/
+      - image: circleci/golang:1.13.5-buster-node
+      # CircleCI の PostgreSQL のイメージはこちら https://hub.docker.com/r/circleci/postgres/
+      - image: circleci/postgres:9.6-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: skillsets
+
+    working_directory: /go/src/github.com/ddddddO/skillset-visualizer
+
+    environment:
+      TEST_RESULTS: /tmp/results
+
+    steps:
+      - checkout
+      - run: mkdir -p $TEST_RESULTS
+
+      # - restore_cache:
+      #     keys:
+      #       - v1-pkg-cache
+
+      # 通常、以下の内容はカスタムしたプライマリイメージのところに記述しますが、
+      # わかりやすくするためここに記述しています。
+      - run: make hello
+      - run:
+          name: Download dependencies
+          command: |
+            cd api && go mod download
+            go get -v github.com/rubenv/sql-migrate/...
+      # - run: go get github.com/lib/pq
+      # - run: go get github.com/mattes/migrate
+      # - run: go get github.com/jstemmer/go-junit-report
+
+      - run:
+          name: Waiting for Postgres to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgres &amp;&amp; exit 1
+
+      - run:
+          name: Setup DB
+          command: |
+            sql-migrate status -config=db/config.yml
+            sql-migrate up -config=db/config.yml -env="development"
+      - run:
+          name: Run unit tests
+          # environment:
+          #   CONTACTS_DB_URL: "postgres://postgres@localhost:5432/skillsets?sslmode=disable"
+          #   #CONTACTS_DB_MIGRATIONS: /go/src/github.com/ddddddO/skillset-visualizer/db/migrations
+          #   CONTACTS_DB_MIGRATIONS: /go/src/github.com/ddddddO/skillset-visualizer/db
+          command: |
+            make test
+
+      - save_cache:
+          key: v1-pkg-cache
+          paths:
+            - "/go/pkg"
+
+      # - run:
+      #     name: Start service
+      #     environment:
+      #       CONTACTS_DB_URL: "postgres://circleci-demo-go@localhost:5432/circle_test?sslmode=disable"
+      #       CONTACTS_DB_MIGRATIONS: /go/src/github.com/CircleCI-Public/circleci-demo-go/db/migrations
+      #     command: ./workdir/contacts
+      #     background: true
+
+      # - run:
+      #     name: Validate service is working
+      #     command: |
+      #       sleep 5
+      #       curl --retry 10 --retry-delay 1 -X POST --header "Content-Type: application/json" -d '{"email":"test@example.com","name":"Test User"}' http://localhost:8080/contacts
+      # - store_artifacts:
+      #     path: /tmp/results
+      #     destination: raw-test-output
+
+      # - store_test_results:
+      #     path: /tmp/results

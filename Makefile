@@ -27,3 +27,6 @@ buildpush:
 test:
 	cd api && \
 	go test -v ./...
+
+hello:
+	@echo "HELLO!"
