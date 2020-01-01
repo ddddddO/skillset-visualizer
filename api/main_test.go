@@ -40,7 +40,7 @@ func TestFetchGraphDataHandler(t *testing.T) {
 		expectedStatusCode int
 		expectedData       string
 	}{
-		{"get", http.MethodGet, http.StatusOK, `{"frontend":1,"backend":2,"database":3,"infrastructure":"4","network":"5","facilitation":4}`},
+		{"get", http.MethodGet, http.StatusOK, `{"frontend":5,"backend":5,"database":5,"infrastructure":"5","network":"5","facilitation":5}`},
 		{"post", http.MethodPost, http.StatusMethodNotAllowed, ""},
 		{"delete", http.MethodDelete, http.StatusMethodNotAllowed, ""},
 	}
