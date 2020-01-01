@@ -1,3 +1,4 @@
+-- +migrate Up
 CREATE TABLE skills (
 	id serial PRIMARY KEY,
 	categories json NOT NULL
