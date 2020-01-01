@@ -23,6 +23,10 @@ buildpush:
 	docker build -t us.gcr.io/work1111/sv-${IMAGE} -f deployments/dockerfiles/${IMAGE}/Dockerfile .
 	docker push us.gcr.io/work1111/sv-${IMAGE}
 
+# CloudBuild
+cloudbuild:
+	gcloud builds submit --config deployments/dockerfiles/${IMAGE}/cloudbuild.yml .
+
 # UT
 test:
 	cd api && \

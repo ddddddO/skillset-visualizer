@@ -1,0 +1,5 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'us.gcr.io/$PROJECT_ID/sv-db', '-f', 'deployments/dockerfiles/db/Dockerfile', '.' ]
+images:
+- 'us.gcr.io/$PROJECT_ID/sv-db'
