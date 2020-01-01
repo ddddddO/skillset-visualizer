@@ -6,8 +6,11 @@ kind: Config
 metadata:
   name: skillset-visualizer
 build:
-  local:
-    useBuildkit: true
+# local(ローカルでビルド) or googleCloudBuild(CloudBuild上でビルド)
+#  local:
+#    useBuildkit: true
+  googleCloudBuild:
+    projectId: work1111
   artifacts:
   - image: us.gcr.io/work1111/sv-api
     context: .
